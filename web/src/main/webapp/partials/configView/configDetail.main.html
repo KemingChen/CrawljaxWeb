@@ -13,7 +13,11 @@
 		<div class="control-group">
 			<label class="control-label">Browser:</label>
 			<select ng-model="config.browser" >
-				<option ng-repeat="browser in browsers" value="{{browser.value}}">{{browser.name}}</option>
+				<option ng-repeat="browser in browsers"
+						value="{{browser.value}}"
+						ng-selected="config.browser == browser.value">
+					{{browser.name}}
+				</option>
 			</select>
 		</div>
 		<div class="control-group">
