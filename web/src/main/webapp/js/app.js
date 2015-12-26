@@ -136,6 +136,12 @@ app.run(['$rootScope', '$state', '$stateParams', '$http', 'configHttp', 'pluginH
             {name: "Internet Explorer", value: "INTERNET EXPLORER"},
             {name: "PhantomJS", value: "PHANTOMJS"}];
 
+        $rootScope.deviceTypes = [
+            {name: "PC", value: ""},
+            {name: "Android", value: "Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19"},
+            {name: "iOS", value: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"}
+        ];
+
         $rootScope.clickConditions = [
             {name: "With Attribute (name=value):", value: "wAttribute"},
             {name: "With Text:", value: "wText"},

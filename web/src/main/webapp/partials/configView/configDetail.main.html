@@ -21,6 +21,16 @@
 			</select>
 		</div>
 		<div class="control-group">
+			<label class="control-label">DeviceType:</label>
+			<select ng-model="config.deviceType" >
+				<option ng-repeat="deviceType in deviceTypes"
+						value="{{deviceType.value}}"
+						ng-selected="config.deviceType == deviceType.value">
+					{{deviceType.name}}
+				</option>
+			</select>
+		</div>
+		<div class="control-group">
 			<label class="control-label">Number of Browsers:</label>
 			<input type="number" ng-model="config.numBrowsers" min="1" />
 		</div>
