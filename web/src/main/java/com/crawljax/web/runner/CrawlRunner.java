@@ -89,7 +89,7 @@ public class CrawlRunner {
                 CrawljaxConfigurationBuilder builder =
                         CrawljaxConfiguration.builderFor(config.getUrl());
                 builder.setBrowserConfig(new BrowserConfiguration(config.getBrowser(), config
-                        .getNumBrowsers()));
+                        .getNumBrowsers(), config.getUserAgent()));
 
                 if (config.getMaxDepth() > 0)
                     builder.setMaximumDepth(config.getMaxDepth());

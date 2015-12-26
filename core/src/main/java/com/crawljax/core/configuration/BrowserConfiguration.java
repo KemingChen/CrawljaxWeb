@@ -38,8 +38,11 @@ public class BrowserConfiguration {
                 }
             };
 
+    private static final String DEFAULT_USER_AGENT = "";
+
     private final BrowserType browsertype;
     private final int numberOfBrowsers;
+    private final String userAgent;
     private final Provider<EmbeddedBrowser> browserBuilder;
     private String remoteHubUrl;
     private String lang;
@@ -71,7 +74,11 @@ public class BrowserConfiguration {
      *                         crawl starts.
      */
     public BrowserConfiguration(BrowserType browsertype, int numberOfBrowsers) {
-        this(browsertype, numberOfBrowsers, DEFAULT_BROWSER_BUILDER);
+        this(browsertype, numberOfBrowsers, DEFAULT_USER_AGENT, DEFAULT_BROWSER_BUILDER);
+    }
+
+    public BrowserConfiguration(BrowserType browsertype, int numberOfBrowsers, String userAgent) {
+        this(browsertype, numberOfBrowsers, userAgent, DEFAULT_BROWSER_BUILDER);
     }
 
     /**
@@ -81,7 +88,7 @@ public class BrowserConfiguration {
      * @param builder          a custom {@link WebDriverBrowserBuilder}.
      */
     public BrowserConfiguration(BrowserType browsertype, int numberOfBrowsers,
-                                Provider<EmbeddedBrowser> builder) {
+                                String userAgent, Provider<EmbeddedBrowser> builder) {
         Preconditions.checkArgument(numberOfBrowsers > 0,
                 "Number of browsers should be 1 or more");
         Preconditions.checkNotNull(browsertype);
@@ -89,11 +96,16 @@ public class BrowserConfiguration {
 
         this.browsertype = browsertype;
         this.numberOfBrowsers = numberOfBrowsers;
+        this.userAgent = userAgent;
         this.browserBuilder = builder;
     }
 
     public BrowserType getBrowsertype() {
         return browsertype;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
     }
 
     public int getNumberOfBrowsers() {
@@ -120,13 +132,14 @@ public class BrowserConfiguration {
                 .add("browserBuilder", browserBuilder)
                 .add("remoteHubUrl", remoteHubUrl)
                 .add("language", lang)
+                .add("userAgent", userAgent)
                 .toString();
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(browsertype, numberOfBrowsers, browserBuilder,
-                remoteHubUrl, lang);
+                remoteHubUrl, lang, userAgent);
     }
 
     @Override
@@ -137,7 +150,8 @@ public class BrowserConfiguration {
                     && Objects.equal(this.numberOfBrowsers, that.numberOfBrowsers)
                     && Objects.equal(this.browserBuilder, that.browserBuilder)
                     && Objects.equal(this.remoteHubUrl, that.remoteHubUrl)
-                    && Objects.equal(this.lang, that.lang);
+                    && Objects.equal(this.lang, that.lang)
+                    && Objects.equal(this.userAgent, that.userAgent);
         }
         return false;
     }

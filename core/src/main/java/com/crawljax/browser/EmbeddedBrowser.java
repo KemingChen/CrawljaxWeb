@@ -148,4 +148,5 @@ public interface EmbeddedBrowser {
      */
     byte[] getScreenShot() throws CrawljaxException;
 
+    void setWindowSize(int width, int height);
 }

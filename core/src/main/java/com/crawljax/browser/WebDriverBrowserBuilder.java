@@ -52,6 +52,7 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
         // Determine the requested browser type
         EmbeddedBrowser browser = null;
         EmbeddedBrowser.BrowserType browserType = configuration.getBrowserConfig().getBrowsertype();
+        String userAgent = configuration.getBrowserConfig().getUserAgent();
         try {
             switch (browserType) {
                 case FIREFOX:
@@ -65,7 +66,7 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
                                     filterAttributes, crawlWaitEvent, crawlWaitReload);
                     break;
                 case CHROME:
-                    browser = newChromeBrowser(filterAttributes, crawlWaitReload, crawlWaitEvent);
+                    browser = newChromeBrowser(userAgent, filterAttributes, crawlWaitReload, crawlWaitEvent);
                     break;
                 case REMOTE:
                     browser =
@@ -85,6 +86,8 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
             LOGGER.error("Crawling with {} failed: " + e.getMessage(), browserType.toString());
             throw e;
         }
+        if (!userAgent.equals(""))
+            browser.setWindowSize(375, 655);
         plugins.runOnBrowserCreatedPlugins(browser);
         return browser;
     }
@@ -113,7 +116,7 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
         return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(), filterAttributes, crawlWaitEvent, crawlWaitReload);
     }
 
-    private EmbeddedBrowser newChromeBrowser(ImmutableSortedSet<String> filterAttributes, long crawlWaitReload, long crawlWaitEvent) {
+    private EmbeddedBrowser newChromeBrowser(String userAgent, ImmutableSortedSet<String> filterAttributes, long crawlWaitReload, long crawlWaitEvent) {
         ChromeDriver driverChrome;
         if (configuration.getProxyConfiguration() != null
                 && configuration.getProxyConfiguration().getType() != ProxyType.NOTHING) {
@@ -125,6 +128,11 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
             optionsChrome.addArguments("--proxy-server=http://"
                     + configuration.getProxyConfiguration().getHostname() + ":"
                     + configuration.getProxyConfiguration().getPort());
+            driverChrome = new ChromeDriver(optionsChrome);
+        } else if (!userAgent.equals("")) {
+            ChromeOptions optionsChrome = new ChromeOptions();
+            optionsChrome.addArguments("--app=http://www.google.com.tw");
+            optionsChrome.addArguments("--user-agent=" + userAgent);
             driverChrome = new ChromeDriver(optionsChrome);
         } else {
             driverChrome = new ChromeDriver();

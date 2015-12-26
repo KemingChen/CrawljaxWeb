@@ -788,6 +788,11 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
         }
     }
 
+    @Override
+    public void setWindowSize(int width, int height) {
+        this.browser.manage().window().setSize(new Dimension(width, height));
+    }
+
     private void removeCanvasGeneratedByFirefoxDriverForScreenshots() {
         String js = "";
         js += "var canvas = document.getElementById('fxdriver-screenshot-canvas');";
