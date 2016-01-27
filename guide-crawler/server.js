@@ -3,9 +3,9 @@ var app = express();
 var route = require('./routes')(express);
 
 app.get('/', function(req, res){
-	res.redirect('/views/index.html');
+	res.redirect('/app/index.html');
 });
-app.use('/views', express.static('views'));
+app.use('/app', express.static('public'));
 app.use('/api', route.api);
 
 var server = app.listen(8000, function() {
