@@ -1,0 +1,16 @@
+{
+  "name": "guide-crawler",
+  "version": "1.0.0",
+  "description": "guide crawler",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "multer": "^1.1.0",
+    "node-supervisor": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node-supervisor server.js"
+  },
+  "license": "MIT"
+}
