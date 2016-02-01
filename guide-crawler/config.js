@@ -1,9 +1,10 @@
 (function() {
   var self = this;
 
-  self.path = require("path");
+  self.path = require('path');
   module.exports = {
-    CONFIGURATIONS_PATH: combineRootPath("../out/configurations"),
+    CONFIGURATIONS_PATH: combineRootPath('../out/configurations'),
+    RECORDS_PATH: combineRootPath('../out/crawl-records'),
   }
 
   function combineRootPath(path) {
