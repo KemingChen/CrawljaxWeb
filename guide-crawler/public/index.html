@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="guideCrawlerApp">
+<html lang="en" ng-app="app">
 
 <head>
     <meta charset="utf-8" />
@@ -10,25 +10,26 @@
     <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="libs/fontawesome/css/font-awesome.min.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/sb-admin.css" />
-    <link rel="stylesheet" type="text/css" href="css/morris.css" />
+    <link rel="stylesheet/less" type="text/css" href="views/app.less" />
 </head>
 
 <body>
     <!-- Content -->
     <div id="wrapper">
-        <div ng-include="'views/navigation.html'"></div>
-        <div ng-include="'views/content.html'"></div>
+        <div ng-include="'views/index/navigation.html'"></div>
+        <div ng-include="'views/index/content.html'"></div>
     </div>
     <!-- JS Library -->
+    <script type="text/javascript" src="libs/less/dist/less.min.js"></script>
     <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="libs/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="libs/raphael/raphael-min.js"></script>
     <script type="text/javascript" src="libs/morrisjs/morris.min.js"></script>
     <!-- Custom JS -->
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="views/navigation.controller.js"></script>
+    <script type="text/javascript" src="views/app.js"></script>
+    <script type="text/javascript" src="views/index/app-index.js"></script>
+    <script type="text/javascript" src="views/index/navigation.controller.js"></script>
 </body>
 
 </html>
