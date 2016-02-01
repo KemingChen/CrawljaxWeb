@@ -22,7 +22,12 @@
   }
 
   function loggerMiddleware(req, res, next) {
-    console.log(req.method, req.originalUrl);
+    var now = new Date();
+    console.log('%s %s - %s %s',
+      now.toDateString(),
+      now.toTimeString(),
+      req.method,
+      req.originalUrl);
     next();
   }
 })();
