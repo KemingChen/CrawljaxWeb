@@ -2,7 +2,7 @@
   var self = this;
   self.express = require('express');
   self.app = express();
-  self.apiRouter = require('./apiRouter')(express.Router());
+  self.api = require('./api')(express.Router());
 
   activate();
 
@@ -10,8 +10,8 @@
     self.app.get('/', function(req, res) {
       res.redirect('/app');
     });
-    self.app.use('/app', express.static('public'));
-    self.app.use('/api', apiRouter);
+    self.app.use('/app', self.express.static('public'));
+    self.app.use('/api', self.api);
 
     runserver(process.argv[2]);
   }
