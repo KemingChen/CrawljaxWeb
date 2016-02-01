@@ -1,5 +1,5 @@
 (function () {
     angular.module('app', [
-        'app.index',
+        'app.index'
     ]);
 })();

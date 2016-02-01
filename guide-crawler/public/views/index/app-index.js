@@ -1,3 +1,7 @@
 (function () {
-    angular.module('app.index', []);
+    'use strict';
+
+    angular.module('app.index', [
+        'app.api'
+    ]);
 })();

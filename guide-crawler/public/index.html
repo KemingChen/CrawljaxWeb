@@ -2,34 +2,38 @@
 <html lang="en" ng-app="app">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Guild Crawler</title>
     <!-- CSS Library -->
-    <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="libs/fontawesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="libs/fontawesome/css/font-awesome.min.css"/>
     <!-- Custom CSS -->
-    <link rel="stylesheet/less" type="text/css" href="views/app.less" />
+    <link rel="stylesheet/less" type="text/css" href="views/index/app-index.less"/>
 </head>
 
 <body>
-    <!-- Content -->
-    <div id="wrapper">
-        <div ng-include="'views/index/navigation.html'"></div>
-        <div ng-include="'views/index/content.html'"></div>
-    </div>
-    <!-- JS Library -->
-    <script type="text/javascript" src="libs/less/dist/less.min.js"></script>
-    <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="libs/angularjs/angular.min.js"></script>
-    <script type="text/javascript" src="libs/raphael/raphael-min.js"></script>
-    <script type="text/javascript" src="libs/morrisjs/morris.min.js"></script>
-    <!-- Custom JS -->
-    <script type="text/javascript" src="views/app.js"></script>
-    <script type="text/javascript" src="views/index/app-index.js"></script>
-    <script type="text/javascript" src="views/index/navigation.controller.js"></script>
+<!-- Content -->
+<div id="wrapper">
+    <div ng-include="'views/index/navigation.html'"></div>
+    <div ng-include="'views/index/content.html'"></div>
+</div>
+<!-- JS Library -->
+<script type="text/javascript" src="libs/less/dist/less.min.js"></script>
+<script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="libs/angularjs/angular.min.js"></script>
+<script type="text/javascript" src="libs/raphael/raphael-min.js"></script>
+<script type="text/javascript" src="libs/morrisjs/morris.min.js"></script>
+<script type="text/javascript" src="libs/angular-resource/angular-resource.min.js"></script>
+<!-- Custom JS -->
+<script type="text/javascript" src="views/app.js"></script>
+<script type="text/javascript" src="components/api.js"></script>
+<script type="text/javascript" src="components/api.configurations.js"></script>
+
+<script type="text/javascript" src="views/index/app-index.js"></script>
+<script type="text/javascript" src="views/index/navigation.controller.js"></script>
 </body>
 
 </html>

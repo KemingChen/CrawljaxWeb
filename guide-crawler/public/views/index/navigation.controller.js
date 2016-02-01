@@ -1,16 +1,18 @@
 (function () {
     'use strict';
-    angular.module('app.index').controller('NavigationCtrl', NavigationCtrl);
-    NavigationCtrl.$inject = [];
 
-    function NavigationCtrl() {
+    angular.module('app.index').controller('NavigationCtrl', NavigationCtrl);
+    NavigationCtrl.$inject = ['Configurations'];
+
+    function NavigationCtrl(Configurations) {
         var vm = this;
-        this.data = [{
-            "name": "hello1"
-        }, {
-            "name": "hello2"
-        }, {
-            "name": "hello3"
-        }];
+
+        activate();
+
+        function activate() {
+            Configurations.query(function (array) {
+                vm.configurations = array;
+            });
+        }
     }
 })();
