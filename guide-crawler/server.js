@@ -1,16 +1,27 @@
-var express = require('express');
-var app = express();
-var route = require('./routes')(express);
+(function() {
+    var self = this;
+    self.express = require('express');
+    self.app = express();
+    self.api = require('./api')(express.Router());
 
-app.get('/', function(req, res){
-	res.redirect('/app');
-});
-app.use('/app', express.static('public'));
-app.use('/api', route.api);
+    activate();
 
-var server = app.listen(8000, function() {
-    var host = server.address().address;
-    var port = server.address().port;
+    function activate() {
+        self.app.get('/', function(req, res) {
+            res.redirect('/app');
+        });
+        self.app.use('/app', express.static('public'));
+        self.app.use('/api', api);
 
-    console.log("Guild Crawler App Listening at http://%s:%s", host, port);
-});
+        runserver(process.argv[2]);
+    }
+
+    function runserver(param) {
+        var listen = (param || "127.0.0.1:8000").split(":");
+        var host = listen[0];
+        var port = listen[1];
+        var server = app.listen(port, host, function() {
+            console.log("Guild Crawler App Listening at http://%s:%s", host, port);
+        });
+    }
+})();
