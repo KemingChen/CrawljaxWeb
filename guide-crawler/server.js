@@ -3,7 +3,7 @@ var app = express();
 var route = require('./routes')(express);
 
 app.get('/', function(req, res){
-	res.redirect('/app/index.html');
+	res.redirect('/app');
 });
 app.use('/app', express.static('public'));
 app.use('/api', route.api);
