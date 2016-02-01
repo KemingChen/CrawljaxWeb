@@ -11,10 +11,15 @@
   }
 
   function getConfigurations(req, res) {
+    var result = [];
     var configurations = self.fs.readdirSync(self.config.CONFIGURATIONS_PATH);
-    configurations.forEach(function(data, index) {
-      configurations[index] = data.replace('.json', '');
+    configurations.forEach(function(filename, index) {
+      if (filename.match('\\.json$')) {
+        var filePath = self.path.join(self.config.CONFIGURATIONS_PATH, filename);
+        var content = self.fs.readFileSync(filePath, 'utf8');
+        result.push(JSON.parse(content));
+      }
     });
-    res.json(configurations);
+    res.json(result);
   }
 })();
