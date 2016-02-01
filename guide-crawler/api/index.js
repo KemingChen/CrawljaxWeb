@@ -1,4 +1,6 @@
 (function() {
+  var self = this;
+
   module.exports = apiRouter;
 
   function apiRouter(router) {
