@@ -9,12 +9,15 @@
     function config($stateProvider) {
         $stateProvider
             .state('Manage.Config', {
-                url: 'configuration/:configName',
+                url: 'configuration/:configId',
                 views: {
                     'content@': {
                         templateUrl: './views/config.html',
                         controller: 'ConfigCtrl as ctrl'
                     }
+                },
+                params: {
+                    config: undefined
                 }
             });
     }

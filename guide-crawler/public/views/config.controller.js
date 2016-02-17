@@ -3,19 +3,28 @@
 
     angular.module('app.content').controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$stateParams'];
+    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService'];
 
-    function ConfigCtrl($stateParams) {
+    function ConfigCtrl($stateParams, CoreApiService) {
         var vm = this;
 
-        vm.configName = $stateParams.configName;
+        vm.configId = $stateParams.configId;
+        vm.config = $stateParams.config;
 
         activate();
 
         //////
 
         function activate() {
-            console.log(vm.configName);
+            if (!vm.config) {
+                CoreApiService.getConfigurations().then(function (configurations) {
+                    angular.forEach(configurations, function (configuration) {
+                        if (configuration.id == vm.configId) {
+                            vm.config = configuration;
+                        }
+                    });
+                });
+            }
         }
     }
 })();

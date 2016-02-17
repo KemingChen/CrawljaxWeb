@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li ng-repeat="configuration in ctrl.configurations">
-                <a ui-sref="Manage.Config({configName: configuration.name})">
+                <a ui-sref="Manage.Config({configId: configuration.id, config: configuration})">
                     {{configuration.name}}
                 </a>
             </li>
