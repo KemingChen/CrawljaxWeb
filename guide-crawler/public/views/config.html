@@ -1,5 +1,14 @@
 <div class="container">
+    <ol class="breadcrumb">
+        <li>
+            <i class="fa fa-dashboard"></i> Crawljax Configuration
+        </li>
+        <li class="active">
+            <i class="fa fa-desktop"></i> {{ctrl.config.name}}
+        </li>
+    </ol>
     <button type="button"
             class="btn btn-lg btn-primary"
-            ng-click="ctrl.run()">Run</button>
+            ng-click="ctrl.run()">Run {{ctrl.config.name}}
+    </button>
 </div>

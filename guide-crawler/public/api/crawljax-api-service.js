@@ -14,7 +14,7 @@
         //////////
 
         function runConfiguration(configId) {
-            return crawljaxApi('rest/history', {}).post("phpbb").$promise;
+            return crawljaxApi('rest/history', {}).post(configId).$promise;
         }
     }
 })();

@@ -20,6 +20,9 @@
                     'nav': {
                         templateUrl: './views/nav/nav.html',
                         controller: 'NavigationCtrl as ctrl'
+                    },
+                    'content':{
+                        template: '請選取左邊的 Crawljax 設定檔'
                     }
                 }
             });
