@@ -1,6 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top"
-     role="navigation"
-     ng-controller="NavigationCtrl as ctrl">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
     <div class="navbar-header">
         <a class="navbar-brand" href="./">Guide Crawler</a>
@@ -9,7 +7,9 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li ng-repeat="configuration in ctrl.configurations">
-                <a href="/">{{configuration.name}}</a>
+                <a ui-sref="Manage.Config({configName: configuration.name})">
+                    {{configuration.name}}
+                </a>
             </li>
         </ul>
     </div>

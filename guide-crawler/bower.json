@@ -15,6 +15,7 @@
     "angularjs": "~1.4.9",
     "fontawesome": "~4.5.0",
     "less": "~2.6.0",
-    "angular-resource": "~1.4.9"
+    "angular-resource": "~1.4.9",
+    "angular-ui-router": "^0.2.18"
   }
 }
