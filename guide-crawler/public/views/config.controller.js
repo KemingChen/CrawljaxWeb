@@ -3,13 +3,14 @@
 
     angular.module('app.content').controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService'];
+    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', 'CrawljaxApiService'];
 
-    function ConfigCtrl($stateParams, CoreApiService) {
+    function ConfigCtrl($stateParams, CoreApiService, CrawljaxApiService) {
         var vm = this;
 
         vm.configId = $stateParams.configId;
         vm.config = $stateParams.config;
+        vm.run = run;
 
         activate();
 
@@ -25,6 +26,12 @@
                     });
                 });
             }
+        }
+
+        function run() {
+            CrawljaxApiService.runConfiguration(vm.configId).then(function () {
+
+            });
         }
     }
 })();

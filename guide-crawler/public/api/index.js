@@ -4,15 +4,17 @@
     angular.module('api', [
         'ngResource'
     ])
-        .constant("endPoint", "/api/")
+        .constant("coreEndPoint", "http://127.0.0.1:8000/api/")
+        .constant("crawljaxEndPoint", "http://127.0.0.1:8080/")
         .factory("interceptor", interceptor)
-        .factory("coreApi", coreApi);
+        .factory("coreApi", coreApi)
+        .factory("crawljaxApi", crawljaxApi);
 
     ////////
-    coreApi.$inject = ['$resource', 'endPoint', 'interceptor'];
-    function coreApi($resource, endPoint, interceptor) {
+    coreApi.$inject = ['$resource', 'coreEndPoint', 'interceptor'];
+    function coreApi($resource, coreEndPoint, interceptor) {
         return function (url, params) {
-            var apiUrl = endPoint + url;
+            var apiUrl = coreEndPoint + url;
             return $resource(apiUrl, params, {
                 get: {
                     method: 'GET',
@@ -22,6 +24,23 @@
                     method: 'GET',
                     interceptor: interceptor,
                     isArray: true
+                },
+                post: {
+                    method: 'POST',
+                    interceptor: interceptor
+                }
+            });
+        };
+    }
+
+    crawljaxApi.$inject = ['$resource', 'crawljaxEndPoint', 'interceptor'];
+    function crawljaxApi($resource, crawljaxEndPoint, interceptor) {
+        return function (url, params) {
+            var apiUrl = crawljaxEndPoint + url;
+            return $resource(apiUrl, params, {
+                get: {
+                    method: 'GET',
+                    interceptor: interceptor
                 },
                 post: {
                     method: 'POST',
