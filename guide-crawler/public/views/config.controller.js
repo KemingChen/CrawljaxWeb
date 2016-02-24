@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app.content').controller('ConfigCtrl', ConfigCtrl);
+    angular.module('app.views').controller('ConfigCtrl', ConfigCtrl);
 
     ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', 'CrawljaxApiService'];
 

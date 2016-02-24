@@ -8,7 +8,7 @@
         <ul class="nav navbar-nav side-nav">
             <li ng-repeat="configuration in ctrl.configurations"
                 ui-sref-active="active">
-                <a ui-sref="Manage.Config({configId: configuration.id, config: configuration})">
+                <a ui-sref="Manage.Config({configId: configuration.id})">
                     {{configuration.name}}
                 </a>
             </li>

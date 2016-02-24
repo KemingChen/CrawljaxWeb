@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app.content').controller('NavigationCtrl', NavigationCtrl);
+    angular.module('app.components').controller('NavigationCtrl', NavigationCtrl);
 
     NavigationCtrl.$inject = ['CoreApiService'];
 

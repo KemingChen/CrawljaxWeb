@@ -2,6 +2,7 @@
 <html lang="en" ng-app="app">
 
 <head>
+    <base href="/" />
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -10,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="libs/fontawesome/css/font-awesome.min.css"/>
     <!-- Custom CSS -->
-    <link rel="stylesheet/less" type="text/css" href="main.less"/>
+    <link rel="stylesheet/less" type="text/css" href="index.less"/>
 </head>
 
 <body>
@@ -37,8 +38,12 @@
 <script type="text/javascript" src="api/core-api-service.js"></script>
 <script type="text/javascript" src="api/crawljax-api-service.js"></script>
 
+<!-- Components -->
+<script type="text/javascript" src="components/index.js"></script>
+<script type="text/javascript" src="components/nav/nav.controller.js"></script>
+
+<!-- Views -->
 <script type="text/javascript" src="views/content.js"></script>
-<script type="text/javascript" src="views/nav/nav.controller.js"></script>
 <script type="text/javascript" src="views/config.controller.js"></script>
 </body>
 

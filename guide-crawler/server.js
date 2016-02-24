@@ -1,19 +1,18 @@
 (function () {
-    var self = this;
-
-    self.express = require('express');
-    self.app = express();
-    self.api = require('./core-api')(express.Router());
+    var express = require('express');
+    var path = require('path');
+    var app = express();
+    var api = require('./core-api')(express.Router());
+    var publicFolder = path.join(__dirname, 'public');
 
     activate();
 
     function activate() {
-        self.app.get('/', function (req, res) {
-            res.redirect('/app');
+        app.use('/api', api);
+        app.use('/', express.static(publicFolder));
+        app.get('*', function (req, res) {
+            res.sendFile(path.join(publicFolder, '/index.html'));
         });
-        self.app.use('/app', self.express.static('public'));
-        self.app.use('/api', self.api);
-
         runServer(process.argv[2]);
     }
 

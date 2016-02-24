@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app.content', [])
+    angular.module('app.views', [])
         .config(config);
 
     ////////
