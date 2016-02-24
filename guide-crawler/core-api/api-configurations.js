@@ -6,8 +6,8 @@
     module.exports = installConfigurationsApi;
 
     function installConfigurationsApi(router) {
-        router.route('/configurations')
-            .get(getConfigurations);
+        router.route('/configurations').get(getConfigurations);
+        router.route('/configurations/:configId').get(getConfiguration);
     }
 
     function getConfigurations(req, res) {
@@ -21,5 +21,12 @@
             }
         });
         res.json(result);
+    }
+
+    function getConfiguration(req, res) {
+        var filename = req.params.configId + ".json";
+        var filePath = self.path.join(self.config.CONFIGURATIONS_PATH, filename);
+        var content = self.fs.readFileSync(filePath, 'utf8');
+        res.json(JSON.parse(content));
     }
 })();

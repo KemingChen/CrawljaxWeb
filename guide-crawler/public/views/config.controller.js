@@ -9,7 +9,7 @@
         var vm = this;
 
         vm.configId = $stateParams.configId;
-        vm.config = $stateParams.config;
+        vm.config = {};
         vm.run = run;
 
         activate();
@@ -17,15 +17,9 @@
         //////
 
         function activate() {
-            if (!vm.config) {
-                CoreApiService.getConfigurations().then(function (configurations) {
-                    angular.forEach(configurations, function (configuration) {
-                        if (configuration.id == vm.configId) {
-                            vm.config = configuration;
-                        }
-                    });
-                });
-            }
+            CoreApiService.getConfiguration(vm.configId).then(function (configuration) {
+                vm.config = configuration;
+            });
         }
 
         function run() {

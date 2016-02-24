@@ -33,6 +33,6 @@
 
     run.$inject = ['crawljaxWebSocket'];
     function run(crawljaxWebSocket) {
-        //crawljaxWebSocket.activate();
+        crawljaxWebSocket.activate();
     }
 })();

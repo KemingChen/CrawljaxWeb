@@ -15,9 +15,6 @@
                         templateUrl: './views/config.html',
                         controller: 'ConfigCtrl as ctrl'
                     }
-                },
-                params: {
-                    config: undefined
                 }
             });
     }
