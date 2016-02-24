@@ -1,12 +1,13 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
     <div class="navbar-header">
-        <a class="navbar-brand" ui-sref="Manage">Guide Crawler</a>
+        <a class="navbar-brand" ui-sref="Manage">Guided Crawler</a>
     </div>
 
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li ng-repeat="configuration in ctrl.configurations">
+            <li ng-repeat="configuration in ctrl.configurations"
+                ui-sref-active="active">
                 <a ui-sref="Manage.Config({configId: configuration.id, config: configuration})">
                     {{configuration.name}}
                 </a>

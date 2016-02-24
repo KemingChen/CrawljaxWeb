@@ -10,6 +10,8 @@
 
         activate();
 
+        /////////
+
         function activate() {
             CoreApiService.getConfigurations().then(function (configurations) {
                 vm.configurations = configurations;

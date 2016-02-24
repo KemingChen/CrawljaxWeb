@@ -6,9 +6,11 @@
     ])
         .constant("coreEndPoint", "http://127.0.0.1:8000/api/")
         .constant("crawljaxEndPoint", "http://127.0.0.1:8080/")
+        .constant("crawljaxSocketEndPoint", "ws://127.0.0.1:8080/socket")
         .factory("interceptor", interceptor)
         .factory("coreApi", coreApi)
-        .factory("crawljaxApi", crawljaxApi);
+        .factory("crawljaxApi", crawljaxApi)
+        .service("crawljaxWebSocket", crawljaxWebSocket);
 
     ////////
     coreApi.$inject = ['$resource', 'coreEndPoint', 'interceptor'];
@@ -48,6 +50,32 @@
                 }
             });
         };
+    }
+
+    crawljaxWebSocket.$inject = ['crawljaxSocketEndPoint', '$rootScope', '$timeout'];
+    function crawljaxWebSocket(crawljaxSocketEndPoint, $rootScope, $timeout) {
+        var service = this;
+
+        service.activate = activate;
+
+        /////////
+
+        function activate() {
+            service.socket = new WebSocket(crawljaxSocketEndPoint);
+            service.socket.onmessage = onMessage;
+            service.socket.onclose = onClose;
+        }
+
+        function onMessage(msg) {
+            $timeout(function () {
+                console.log('[socket]', msg.data);
+
+            });
+        }
+
+        function onClose() {
+            activate();
+        }
     }
 
     interceptor.$inject = ['$q'];

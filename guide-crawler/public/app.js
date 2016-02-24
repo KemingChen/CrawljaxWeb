@@ -6,7 +6,8 @@
         'api',
         'app.content'
     ])
-        .config(config);
+        .config(config)
+        .run(run);
 
     ///////
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -21,10 +22,15 @@
                         templateUrl: './views/nav/nav.html',
                         controller: 'NavigationCtrl as ctrl'
                     },
-                    'content':{
+                    'content': {
                         template: '請選取左邊的 Crawljax 設定檔'
                     }
                 }
             });
+    }
+
+    run.$inject = ['crawljaxWebSocket'];
+    function run(crawljaxWebSocket) {
+        crawljaxWebSocket.activate();
     }
 })();
