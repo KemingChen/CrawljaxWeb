@@ -11,7 +11,10 @@
         app.use('/api', api);
         app.use('/', express.static(publicFolder));
         app.get('*', function (req, res) {
-            res.sendFile(path.join(publicFolder, '/index.html'));
+            if (!path.extname(req.url.split("?")[0]))
+                res.sendFile(path.join(publicFolder, '/index.html'));
+            else
+                res.status(404).send('Not found!!');
         });
         runServer(process.argv[2]);
     }
