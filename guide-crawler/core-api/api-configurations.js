@@ -2,7 +2,6 @@
     var self = this;
 
     self.config = require('../config');
-    self.fs = require('fs');
     module.exports = installConfigurationsApi;
 
     function installConfigurationsApi(router) {
@@ -12,11 +11,10 @@
 
     function getConfigurations(req, res) {
         var result = [];
-        var configurations = self.fs.readdirSync(self.config.CONFIGURATIONS_PATH);
+        var configurations = self.config.CONFIGURATIONS_PATH.getDirSync();
         configurations.forEach(function (filename, index) {
             if (filename.match('\\.json$')) {
-                var filePath = self.path.join(self.config.CONFIGURATIONS_PATH, filename);
-                var content = self.fs.readFileSync(filePath, 'utf8');
+                var content = self.config.CONFIGURATIONS_PATH.getFileSync(filename);
                 result.push(JSON.parse(content));
             }
         });
@@ -25,8 +23,7 @@
 
     function getConfiguration(req, res) {
         var filename = req.params.configId + ".json";
-        var filePath = self.path.join(self.config.CONFIGURATIONS_PATH, filename);
-        var content = self.fs.readFileSync(filePath, 'utf8');
+        var content = self.config.CONFIGURATIONS_PATH.getFileSync(filename);
         res.json(JSON.parse(content));
     }
 })();

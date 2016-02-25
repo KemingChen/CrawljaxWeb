@@ -9,7 +9,7 @@
         var vm = this;
 
         vm.configId = $stateParams.configId;
-        vm.config = {};
+        vm.show = show;
         vm.run = run;
 
         activate();
@@ -20,12 +20,27 @@
             CoreApiService.getConfiguration(vm.configId).then(function (configuration) {
                 vm.config = configuration;
             });
+            CoreApiService.getRecords().then(function (records) {
+                records.forEach(function (record) {
+                    if (!vm.record && record['configurationId'] == vm.configId) {
+                        vm.record = record;
+                        CoreApiService.getRecord(record.id).then(function (record) {
+                            vm.record = record;
+                            console.log(vm.record);
+                        });
+                    }
+                });
+            })
         }
 
         function run() {
-            CrawljaxApiService.runConfiguration(vm.configId).then(function () {
+            CrawljaxApiService.runConfiguration(vm.configId);
+        }
 
-            });
+        function show(state) {
+            vm.state = {};
+            vm.state.snapshot = "snapshot";
+            vm.state.inputs = [1, 2, 3, 4];
         }
     }
 })();

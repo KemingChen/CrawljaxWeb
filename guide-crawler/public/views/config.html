@@ -11,4 +11,36 @@
             class="btn btn-lg btn-primary"
             ng-click="ctrl.run()">Run {{ctrl.config.name}}
     </button>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="list-group">
+                <div ng-repeat="state in ctrl.record.result['states']">
+                    <a ng-href="{{state.url}}"
+                       target="_blank">
+                        <i class="fa fa-link"></i>
+                    </a>
+                    <a class="list-group-item"
+                       ng-click="ctrl.show(state)">
+                        <i class="fa fa-star"></i>
+                        <span>{{state.name}}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ctrl.state.snapshot}}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ctrl.state.inputs}}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
