@@ -2,6 +2,8 @@
     var self = this;
 
     self.config = require('../config');
+    self.webshot = require('webshot');
+    self.path = require('path');
     module.exports = installRecordsApi;
 
     function installRecordsApi(router) {
@@ -37,6 +39,19 @@
         result.crawl = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/crawl.json'));
         result.result = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/result.json'));
         result.config = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/config.json'));
+
+        var domFilenameArray = self.config.RECORDS_PATH.getDirSync(dir + '/plugins/0/doms');
+        domFilenameArray.forEach(function (filename) {
+            var content = self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/doms/' + filename);
+            var imageFilename = self.path.join(dir, filename + ".png");
+
+            result.result['states'][filename.split('.')[0]]['snapshot'] = './images/' + imageFilename;
+
+            var output = self.path.join(self.config.IMAGE_PATH.value, imageFilename);
+            webshot(content, output, {siteType: 'html'}, function (err) {
+                err && console.log(err);
+            });
+        });
 
         res.json(result);
     }

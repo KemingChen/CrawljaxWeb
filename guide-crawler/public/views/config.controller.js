@@ -38,9 +38,7 @@
         }
 
         function show(state) {
-            vm.state = {};
-            vm.state.snapshot = "snapshot";
-            vm.state.inputs = [1, 2, 3, 4];
+            vm.state = state;
         }
     }
 })();

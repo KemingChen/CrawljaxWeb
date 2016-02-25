@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container main-config">
     <ol class="breadcrumb">
         <li>
             <i class="fa fa-dashboard"></i> Crawljax Configuration
@@ -21,6 +21,7 @@
                         <i class="fa fa-link"></i>
                     </a>
                     <a class="list-group-item"
+                       ng-class="state == ctrl.state ? 'active' : ''"
                        ng-click="ctrl.show(state)">
                         <i class="fa fa-star"></i>
                         <span>{{state.name}}</span>
@@ -29,14 +30,14 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{ctrl.state.snapshot}}
+            <div class="panel panel-default" ng-show="ctrl.state">
+                <div class="panel-body snapshot">
+                    <img src="" ng-src="{{ctrl.state.snapshot}}"/>
                 </div>
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default" ng-show="ctrl.state">
                 <div class="panel-body">
                     {{ctrl.state.inputs}}
                 </div>

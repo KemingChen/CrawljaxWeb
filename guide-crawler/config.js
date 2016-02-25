@@ -6,7 +6,8 @@
 
     module.exports = {
         CONFIGURATIONS_PATH: combineRootPath('../out/configurations'),
-        RECORDS_PATH: combineRootPath('../out/crawl-records')
+        RECORDS_PATH: combineRootPath('../out/crawl-records'),
+        IMAGE_PATH: combineRootPath('./public/images')
     };
 
     function combineRootPath(path) {
