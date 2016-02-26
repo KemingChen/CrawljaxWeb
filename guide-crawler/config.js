@@ -5,9 +5,9 @@
     self.fs = require('fs');
 
     module.exports = {
-        CONFIGURATIONS_PATH: combineRootPath('../out/configurations'),
-        RECORDS_PATH: combineRootPath('../out/crawl-records'),
-        IMAGE_PATH: combineRootPath('./public/images')
+        configuration: combineRootPath('../out/configurations'),
+        records: combineRootPath('../out/crawl-records'),
+        public: combineRootPath('./public')
     };
 
     function combineRootPath(path) {

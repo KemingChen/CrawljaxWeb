@@ -3,6 +3,7 @@
 
     self.config = require('../config');
     self.webshot = require('webshot');
+    self.promise = require('promise');
     self.jsdom = require('jsdom').jsdom;
     self.path = require('path');
 
@@ -15,10 +16,10 @@
 
     function getRecords(req, res) {
         var result = [];
-        var recordsDir = self.config.RECORDS_PATH.getDirSync();
+        var recordsDir = self.config.records.getDirSync();
 
         recordsDir.forEach(function (dir) {
-            var crawlJsonContent = self.config.RECORDS_PATH.getFileSync(dir + '/crawl.json');
+            var crawlJsonContent = self.config.records.getFileSync(dir + '/crawl.json');
             if (crawlJsonContent != "{}")
                 result.push(JSON.parse(crawlJsonContent));
         });
@@ -36,45 +37,55 @@
     }
 
     function getRecord(req, res) {
-        var dir = req.params['recordId'];
-        var result = {};
-        result.crawl = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/crawl.json'));
-        result.result = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/result.json'));
-        result.config = JSON.parse(self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/config.json'));
+        var recordId = req.params['recordId'];
+        var json = {};
+        json.crawl = JSON.parse(self.config.records.getFileSync(recordId + '/crawl.json'));
+        json.result = JSON.parse(self.config.records.getFileSync(recordId + '/plugins/0/result.json'));
+        json.config = JSON.parse(self.config.records.getFileSync(recordId + '/plugins/0/config.json'));
 
-        var domFilenameArray = self.config.RECORDS_PATH.getDirSync(dir + '/plugins/0/doms');
-        domFilenameArray.forEach(function (filename) {
-            var content = self.config.RECORDS_PATH.getFileSync(dir + '/plugins/0/doms/' + filename);
+        screenShotDOM(json.result, recordId).then(function () {
+            res.json(json);
+        });
+    }
 
-            var imageFilename = self.path.join(dir, filename + ".png");
-            result.result['states'][filename.split('.')[0]]['snapshot'] = './images/' + imageFilename;
+    function screenShotDOM(result, recordId) {
+        return new self.promise(function (resolve, reject) {
+            var domsDir = self.path.join(recordId, '/plugins/0/doms');
+            self.config.records.getDirSync(domsDir).forEach(function (filename) {
+                var filePath = self.path.join(domsDir, filename);
+                var content = self.config.records.getFileSync(filePath);
 
-            var output = self.path.join(self.config.IMAGE_PATH.value, imageFilename);
-            var window = jsdom(content).defaultView;
-            var $ = require('jQuery')(window);
+                var imagePath = self.path.join('./screenshot', recordId, filename.replace('.html', '.png'));
+                var statusName = filename.split('.')[0];
+                result['states'][statusName]['snapshot'] = imagePath;
 
-            $("textarea, input:not([type]), input[type=text], input[type=password]")
-                .each(function (index) {
-                    $(this).attr('placeholder', (index + 1));
+                var output = self.path.join(self.config.public.value, imagePath);
+                var window = jsdom(content).defaultView;
+                var $ = require('jQuery')(window);
+
+                $("textarea, input:not([type]), input[type=text], input[type=password]")
+                    .each(function (index) {
+                        $(this).attr('placeholder', (index + 1));
+                    });
+
+                webshot(window.document.documentElement.outerHTML, output, {
+                    siteType: 'html',
+                    defaultWhiteBackground: true,
+                    shotSize: {
+                        width: 'window',
+                        height: 'all'
+                    },
+                    customCSS: getCustomCSS()
+                }, function (err) {
+                    err && console.log(err);
+                    resolve();
                 });
-
-            webshot(window.document.documentElement.outerHTML, output, {
-                siteType: 'html',
-                defaultWhiteBackground: true,
-                shotSize: {
-                    width: 'window',
-                    height: 'all'
-                },
-                customCSS: getCustomCSS()
-            }, function (err) {
-                err && console.log(err);
             });
         });
+    }
 
-        res.json(result);
-
-        function getCustomCSS() {
-            return '\
+    function getCustomCSS() {
+        return '\
                 textarea,\
                 input:not([type]),\
                 input[type=text],\
@@ -90,6 +101,5 @@
                     color: red;\
                     font-weight: bolder;\
                 }';
-        }
     }
 })();
