@@ -5,7 +5,8 @@
         'ui.router',
         'api',
         'app.views',
-        'app.components'
+        'app.components',
+        'app.directives'
     ])
         .config(config)
         .run(run);

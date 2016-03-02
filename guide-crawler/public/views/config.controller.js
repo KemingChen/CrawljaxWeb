@@ -19,6 +19,10 @@
         function activate() {
             CoreApiService.getConfiguration(vm.configId).then(function (configuration) {
                 vm.config = configuration;
+                vm.formInputModel = {};
+                vm.config['formInputValues'].forEach(function (input) {
+                    vm.formInputModel[input.name] = input.value;
+                });
             });
             CoreApiService.getRecords().then(function (records) {
                 records.forEach(function (record) {
@@ -26,7 +30,6 @@
                         vm.record = record;
                         CoreApiService.getRecord(record.id).then(function (record) {
                             vm.record = record;
-                            console.log(vm.record);
                         });
                     }
                 });

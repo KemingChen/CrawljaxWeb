@@ -51,7 +51,13 @@
     function screenShotDOM(result, recordId) {
         return new self.promise(function (resolve, reject) {
             var domsDir = self.path.join(recordId, '/plugins/0/doms');
-            self.config.records.getDirSync(domsDir).forEach(function (filename) {
+            var files = self.config.records.getDirSync(domsDir);
+
+            if (files.length == 0) {
+                resolve();
+            }
+
+            files.forEach(function (filename) {
                 var filePath = self.path.join(domsDir, filename);
                 var content = self.config.records.getFileSync(filePath);
 
@@ -63,9 +69,22 @@
                 var window = jsdom(content).defaultView;
                 var $ = require('jQuery')(window);
 
+                result['states'][statusName]['inputs'] = [];
                 $("textarea, input:not([type]), input[type=text], input[type=password]")
                     .each(function (index) {
-                        $(this).attr('placeholder', (index + 1));
+                        var name = $(this).attr('name');
+                        var id = $(this).attr('id');
+                        var key = id ? id : name;
+                        if (key) {
+                            var inputIndex = index + 1;
+                            result['states'][statusName]['inputs'].push({
+                                index: inputIndex,
+                                key: key,
+                                type: $(this).prop('tagName'),
+                                html: this.outerHTML
+                            });
+                            $(this).attr('placeholder', inputIndex);
+                        }
                     });
 
                 webshot(window.document.documentElement.outerHTML, output, {
