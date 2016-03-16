@@ -12,6 +12,7 @@
         service.getConfiguration = getConfiguration;
         service.getRecords = getRecords;
         service.getRecord = getRecord;
+        service.runConfiguration = runConfiguration;
 
         return service;
         //////////
@@ -30,6 +31,10 @@
 
         function getRecord(recordId) {
             return coreApi('records/' + recordId, {}).get().$promise;
+        }
+
+        function runConfiguration(configId, inputs){
+            return coreApi('configurations/' + configId + "/run", {}).post(inputs).$promise;
         }
     }
 })();

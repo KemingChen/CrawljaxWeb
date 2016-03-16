@@ -30,14 +30,30 @@
                         vm.record = record;
                         CoreApiService.getRecord(record.id).then(function (record) {
                             vm.record = record;
+                            var states = vm.record.result['states'];
+                            for (var key in states) {
+                                if (states.hasOwnProperty(key)) {
+                                    var state = states[key];
+                                    if (state.inputs.length > 0) {
+                                        vm.state = state;
+                                        break;
+                                    }
+                                }
+                            }
                         });
                     }
                 });
+                if (!vm.record) {
+                    vm.record = {
+                        result: {}
+                    };
+                }
             })
         }
 
         function run() {
-            CrawljaxApiService.runConfiguration(vm.configId);
+            console.log(vm.formInputModel);
+            CoreApiService.runConfiguration(vm.configId, vm.formInputModel);
         }
 
         function show(state) {

@@ -1,20 +1,20 @@
 (function () {
-    var self = this;
-
-    self.config = require('../config');
+    var config = require('../config');
+    var requestPromise = require('request-promise');
     module.exports = installConfigurationsApi;
 
     function installConfigurationsApi(router) {
         router.route('/configurations').get(getConfigurations);
         router.route('/configurations/:configId').get(getConfiguration);
+        router.route('/configurations/:configId/run').post(runConfiguration);
     }
 
     function getConfigurations(req, res) {
         var result = [];
-        var configurations = self.config.configuration.getDirSync();
+        var configurations = config.configuration.getDirSync();
         configurations.forEach(function (filename, index) {
             if (filename.match('\\.json$')) {
-                var content = self.config.configuration.getFileSync(filename);
+                var content = config.configuration.getFileSync(filename);
                 result.push(JSON.parse(content));
             }
         });
@@ -23,7 +23,37 @@
 
     function getConfiguration(req, res) {
         var filename = req.params.configId + ".json";
-        var content = self.config.configuration.getFileSync(filename);
+        var content = config.configuration.getFileSync(filename);
         res.json(JSON.parse(content));
+    }
+
+    function runConfiguration(req, res) {
+        var configId = req.params.configId;
+        var filename = configId + ".json";
+        var content = config.configuration.getFileSync(filename);
+        var configuration = JSON.parse(content);
+        var values = req.body;
+        configuration.formInputValues = [];
+
+        for (var key in values) {
+            if (values.hasOwnProperty(key)) {
+                configuration.formInputValues.push({
+                    'name': key,
+                    'value': values[key]
+                })
+            }
+        }
+
+        config.configuration.writeFileSync(filename, JSON.stringify(configuration));
+
+        requestPromise({
+            method: 'POST',
+            uri: 'http://127.0.0.1:8080/rest/history',
+            body: configId
+        }).then(function () {
+            res.json({});
+        }).catch(function (err) {
+            res.json(err);
+        });
     }
 })();

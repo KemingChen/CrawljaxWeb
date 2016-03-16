@@ -4,10 +4,12 @@
     var app = express();
     var api = require('./core-api')(express.Router());
     var publicFolder = path.join(__dirname, 'public');
+    var bodyParser = require('body-parser');
 
     activate();
 
     function activate() {
+        app.use(bodyParser.json());
         app.use('/api', api);
         app.use('/', express.static(publicFolder));
         app.get('*', function (req, res) {

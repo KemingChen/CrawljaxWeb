@@ -15,8 +15,17 @@
         object.value = self.path.join(process.env.PWD, path);
         object.getFileSync = getFileSync(object.value);
         object.getDirSync = getDirSync(object.value);
+        object.writeFileSync = writeFileSync(object.value);
 
         return object;
+
+        function writeFileSync(rootPath) {
+            return function (filename, content) {
+                console.log('save', filename);
+                var filePath = self.path.join(rootPath, filename);
+                return self.fs.writeFileSync(filePath, content, 'utf8');
+            }
+        }
 
         function getFileSync(rootPath) {
             return function (filename) {

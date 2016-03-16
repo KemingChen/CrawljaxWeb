@@ -13,7 +13,7 @@
             </button>
         </li>
     </ol>
-    <div class="row" ng-if="ctrl.record.result">
+    <div class="row" ng-if="ctrl.record.result['states']">
         <div class="col-lg-2">
             <div class="list-group">
                 <div ng-repeat="_state in ctrl.record.result['states']"
@@ -46,8 +46,8 @@
                        class="form-control"
                        ng-model="ctrl.formInputModel[input.key]"/>
                 <textarea ng-if="input.type.toLowerCase() == 'textarea'"
-                       class="form-control"
-                       ng-model="ctrl.formInputModel[input.key]"></textarea>
+                          class="form-control"
+                          ng-model="ctrl.formInputModel[input.key]"></textarea>
             </div>
         </div>
     </div>
@@ -55,6 +55,11 @@
         <div class="col-lg-12 loading">
             <img src="./images/loading.gif"/>
             <b>Processing...</b>
+        </div>
+    </div>
+    <div class="row" ng-if="ctrl.record.result && !ctrl.record.result['states']">
+        <div class="col-lg-12 loading">
+            <b>查無過往資料</b>
         </div>
     </div>
 </div>

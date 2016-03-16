@@ -20,8 +20,11 @@
 
         recordsDir.forEach(function (dir) {
             var crawlJsonContent = self.config.records.getFileSync(dir + '/crawl.json');
-            if (crawlJsonContent != "{}")
-                result.push(JSON.parse(crawlJsonContent));
+            if (crawlJsonContent != "{}") {
+                var crawl = JSON.parse(crawlJsonContent);
+                if (crawl['crawlStatus'] === 'success')
+                    result.push(JSON.parse(crawlJsonContent));
+            }
         });
 
         result.sort(function (a, b) {
@@ -38,14 +41,27 @@
 
     function getRecord(req, res) {
         var recordId = req.params['recordId'];
-        var json = {};
+        var parseFilePath = recordId + '/parse.json';
+        var json = JSON.parse(self.config.records.getFileSync(parseFilePath));
+
+        if (Object.keys(json).length > 0) {
+            res.json(json);
+            return;
+        }
+
         json.crawl = JSON.parse(self.config.records.getFileSync(recordId + '/crawl.json'));
         json.result = JSON.parse(self.config.records.getFileSync(recordId + '/plugins/0/result.json'));
         json.config = JSON.parse(self.config.records.getFileSync(recordId + '/plugins/0/config.json'));
 
-        screenShotDOM(json.result, recordId).then(function () {
+        if (Object.keys(json.result).length > 0) {
+            screenShotDOM(json.result, recordId).then(function () {
+                self.config.records.writeFileSync(parseFilePath, JSON.stringify(json));
+                res.json(json);
+            });
+        }
+        else {
             res.json(json);
-        });
+        }
     }
 
     function screenShotDOM(result, recordId) {
@@ -53,11 +69,13 @@
             var domsDir = self.path.join(recordId, '/plugins/0/doms');
             var files = self.config.records.getDirSync(domsDir);
 
+            console.log('processing:', recordId, ', found:', files.length, 'documents');
             if (files.length == 0) {
                 resolve();
             }
 
             files.forEach(function (filename) {
+                console.log('processing:', recordId, ', capture:', filename);
                 var filePath = self.path.join(domsDir, filename);
                 var content = self.config.records.getFileSync(filePath);
 
