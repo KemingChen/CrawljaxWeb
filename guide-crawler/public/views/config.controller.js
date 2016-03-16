@@ -21,7 +21,15 @@
 
         //////
 
+        function init() {
+            vm.record = undefined;
+            vm.isProcessing = true;
+            vm.noInputs = true;
+        }
+
         function activate() {
+            init();
+
             CoreApiService.getConfiguration(vm.configId).then(function (configuration) {
                 vm.config = configuration;
                 vm.formInputModel = {};
@@ -58,10 +66,12 @@
                                     var state = states[key];
                                     if (state.inputs.length > 0) {
                                         vm.state = state;
+                                        vm.noInputs = false;
                                         break;
                                     }
                                 }
                             }
+                            vm.isProcessing = false;
                         });
                     }
                 });
@@ -74,9 +84,10 @@
         }
 
         function run() {
-            console.log(vm.formInputModel);
+            vm.isProcessing = true;
+
             CoreApiService.runConfiguration(vm.configId, vm.formInputModel).then(function () {
-                vm.record = undefined;
+                init();
                 vm.msg = message.parsing;
             });
         }
