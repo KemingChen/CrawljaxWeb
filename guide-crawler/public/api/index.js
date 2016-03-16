@@ -4,12 +4,10 @@
     angular.module('api', [
         'ngResource'
     ])
-        .constant("coreEndPoint", "http://127.0.0.1:8000/api/")
-        .constant("crawljaxEndPoint", "http://127.0.0.1:8080/")
+        .constant("coreEndPoint", "/api/")
         .constant("crawljaxSocketEndPoint", "ws://127.0.0.1:8080/socket")
         .factory("interceptor", interceptor)
         .factory("coreApi", coreApi)
-        .factory("crawljaxApi", crawljaxApi)
         .service("crawljaxWebSocket", crawljaxWebSocket);
 
     ////////
@@ -35,23 +33,6 @@
         };
     }
 
-    crawljaxApi.$inject = ['$resource', 'crawljaxEndPoint', 'interceptor'];
-    function crawljaxApi($resource, crawljaxEndPoint, interceptor) {
-        return function (url, params) {
-            var apiUrl = crawljaxEndPoint + url;
-            return $resource(apiUrl, params, {
-                get: {
-                    method: 'GET',
-                    interceptor: interceptor
-                },
-                post: {
-                    method: 'POST',
-                    interceptor: interceptor
-                }
-            });
-        };
-    }
-
     crawljaxWebSocket.$inject = ['crawljaxSocketEndPoint', '$rootScope', '$timeout'];
     function crawljaxWebSocket(crawljaxSocketEndPoint, $rootScope, $timeout) {
         var service = this;
@@ -68,8 +49,15 @@
 
         function onMessage(msg) {
             $timeout(function () {
-                console.log('[socket]', msg.data);
-
+                var array = msg.data.split('-');
+                var key = array[0];
+                array.shift();
+                var content = array.join('-');
+                console.log('[socket]', key, content);
+                $rootScope.$broadcast('CrawljaxSocket', {
+                    key: key,
+                    content: content
+                });
             });
         }
 

@@ -12,7 +12,7 @@
     function getConfigurations(req, res) {
         var result = [];
         var configurations = config.configuration.getDirSync();
-        configurations.forEach(function (filename, index) {
+        configurations.forEach(function (filename) {
             if (filename.match('\\.json$')) {
                 var content = config.configuration.getFileSync(filename);
                 result.push(JSON.parse(content));
@@ -44,14 +44,22 @@
             }
         }
 
-        config.configuration.writeFileSync(filename, JSON.stringify(configuration));
-
+        console.log('http://127.0.0.1:8080/rest/configurations/' + configId);
+        console.log(JSON.stringify(configuration));
         requestPromise({
-            method: 'POST',
-            uri: 'http://127.0.0.1:8080/rest/history',
-            body: configId
+            method: 'PUT',
+            uri: 'http://127.0.0.1:8080/rest/configurations/' + configId,
+            json: configuration
         }).then(function () {
-            res.json({});
+            requestPromise({
+                method: 'POST',
+                uri: 'http://127.0.0.1:8080/rest/history',
+                body: configId
+            }).then(function () {
+                res.json({});
+            }).catch(function (err) {
+                res.json(err);
+            });
         }).catch(function (err) {
             res.json(err);
         });

@@ -3,10 +3,15 @@
 
     angular.module('app.views').controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', 'CrawljaxApiService'];
+    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', '$scope'];
 
-    function ConfigCtrl($stateParams, CoreApiService, CrawljaxApiService) {
+    function ConfigCtrl($stateParams, CoreApiService, $scope) {
         var vm = this;
+
+        var message = {
+            processing: 'Processing Record ...',
+            parsing: 'Crawljax Parsing ...'
+        };
 
         vm.configId = $stateParams.configId;
         vm.show = show;
@@ -24,6 +29,23 @@
                     vm.formInputModel[input.name] = input.value;
                 });
             });
+
+            $scope.$on('CrawljaxSocket', function (event, args) {
+                var key = args.key;
+                //var content = args.content;
+
+                if (key == 'success') {
+                    processingRecord();
+                }
+            });
+
+            processingRecord();
+        }
+
+        function processingRecord() {
+            vm.record = undefined;
+            vm.msg = message.processing;
+
             CoreApiService.getRecords().then(function (records) {
                 records.forEach(function (record) {
                     if (!vm.record && record['configurationId'] == vm.configId) {
@@ -48,12 +70,15 @@
                         result: {}
                     };
                 }
-            })
+            });
         }
 
         function run() {
             console.log(vm.formInputModel);
-            CoreApiService.runConfiguration(vm.configId, vm.formInputModel);
+            CoreApiService.runConfiguration(vm.configId, vm.formInputModel).then(function () {
+                vm.record = undefined;
+                vm.msg = message.parsing;
+            });
         }
 
         function show(state) {

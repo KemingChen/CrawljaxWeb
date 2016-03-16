@@ -54,7 +54,7 @@
     <div class="row" ng-if="!ctrl.record.result">
         <div class="col-lg-12 loading">
             <img src="./images/loading.gif"/>
-            <b>Processing...</b>
+            <b>{{ctrl.msg}}</b>
         </div>
     </div>
     <div class="row" ng-if="ctrl.record.result && !ctrl.record.result['states']">
