@@ -52,4 +52,59 @@
       height: 100px;
     }
   }
+
+  .data-set-area {
+    .panel-heading {
+      padding-bottom: 3px;
+
+      .click-btn {
+        border-radius: 5px;
+        margin-left: 5px;
+        padding: 5px;
+        font-size: 12px;
+        background-color: #337ab7;
+        cursor: pointer;
+      }
+    }
+
+    .panel-body {
+      display: flex;
+      padding: 5px;
+
+      > div {
+        font-size: 14px;
+        display: flex;
+        border-radius: 5px;
+        overflow: hidden;
+        margin: 0 5px;
+        color: #333;
+        background-color: #EEE;
+
+        * {
+          padding: 5px 10px;
+        }
+
+        .name-label {
+          text-align: center;
+        }
+        .delete-btn {
+          color: #fff;
+          background-color: #d9534f;
+        }
+      }
+
+      .-selected {
+        color: #fff !important;
+        background-color: #337ab7 !important;
+      }
+
+      .-width-auto {
+        width: auto;
+      }
+
+      .-no-margin-bottom {
+        margin-bottom: 0;
+      }
+    }
+  }
 }

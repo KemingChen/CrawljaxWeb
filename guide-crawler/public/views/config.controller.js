@@ -16,6 +16,7 @@
         vm.configId = $stateParams.configId;
         vm.show = show;
         vm.run = run;
+        vm.hideNoInputsState = true;
 
         activate();
 
