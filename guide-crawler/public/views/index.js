@@ -1,7 +1,9 @@
 (function () {
     'use strict';
 
-    angular.module('app.views', [])
+    angular.module('app.views', [
+        "ngStorage"
+    ])
         .config(config);
 
     ////////

@@ -55,8 +55,10 @@
                 method: 'POST',
                 uri: 'http://127.0.0.1:8080/rest/history',
                 body: configId
-            }).then(function () {
-                res.json({});
+            }).then(function (data) {
+                data = JSON.parse(data);
+                console.log(data["id"]);
+                res.json(data["id"]);
             }).catch(function (err) {
                 res.json(err);
             });

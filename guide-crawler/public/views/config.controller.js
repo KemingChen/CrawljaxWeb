@@ -3,20 +3,26 @@
 
     angular.module('app.views').controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', '$scope'];
+    ConfigCtrl.$inject = ['$stateParams', 'CoreApiService', '$scope', '$localStorage'];
 
-    function ConfigCtrl($stateParams, CoreApiService, $scope) {
+    function ConfigCtrl($stateParams, CoreApiService, $scope, $localStorage) {
         var vm = this;
 
-        var message = {
-            processing: 'Processing Record ...',
-            parsing: 'Crawljax Parsing ...'
+        var MESSAGE = {
+            Processing: 'Processing Record ...',
+            Parsing: 'Crawljax Parsing ...'
         };
 
         vm.configId = $stateParams.configId;
         vm.show = show;
         vm.run = run;
-        vm.hideNoInputsState = true;
+
+        vm.selected = undefined;
+
+        vm.hideNoInputsState = false;
+        vm.addDataSet = addDataSet;
+        vm.deleteDataSet = deleteDataSet;
+        vm.choseDataSet = choseDataSet;
 
         activate();
 
@@ -28,36 +34,47 @@
             vm.noInputs = true;
         }
 
+        function getDataSetFromCache(configId) {
+            if (!$localStorage.config)
+                $localStorage.config = {};
+            if (!$localStorage.config[configId])
+                $localStorage.config[configId] = {};
+            return $localStorage.config[configId];
+        }
+
         function activate() {
             init();
 
             CoreApiService.getConfiguration(vm.configId).then(function (configuration) {
                 vm.config = configuration;
-                vm.formInputModel = {};
-                vm.config['formInputValues'].forEach(function (input) {
-                    vm.formInputModel[input.name] = input.value;
-                });
+                vm.dataSets = getDataSetFromCache(vm.configId);
+                var key = Object.keys(vm.dataSets)[0];
+                if (key) {
+                    vm.selected = vm.dataSets[key];
+                    processingRecord();
+                }
             });
 
             $scope.$on('CrawljaxSocket', function (event, args) {
-                var key = args.key;
-                //var content = args.content;
+                var key = args["key"];
+                var content = args["content"];
 
                 if (key == 'success') {
                     processingRecord();
                 }
             });
-
-            processingRecord();
         }
 
         function processingRecord() {
             vm.record = undefined;
-            vm.msg = message.processing;
+            vm.msg = MESSAGE.Processing;
 
             CoreApiService.getRecords().then(function (records) {
                 records.forEach(function (record) {
-                    if (!vm.record && record['configurationId'] == vm.configId) {
+                    if (!vm.record &&
+                        record['configurationId'] == vm.configId &&
+                        record.id == vm.selected.recordId) {
+
                         vm.record = record;
                         CoreApiService.getRecord(record.id).then(function (record) {
                             vm.record = record;
@@ -87,10 +104,32 @@
         function run() {
             vm.isProcessing = true;
 
-            CoreApiService.runConfiguration(vm.configId, vm.formInputModel).then(function () {
-                init();
-                vm.msg = message.parsing;
-            });
+            CoreApiService.runConfiguration(vm.configId, vm.selected.formInputValues)
+                .then(function (data) {
+                    init();
+                    vm.msg = MESSAGE.Parsing;
+                    vm.selected.recordId = data;
+                });
+        }
+
+        function addDataSet() {
+            var person = prompt("給一個新名稱吧", "");
+            if (person != null && person != "") {
+                vm.dataSets[person] = {
+                    name: person,
+                    formInputValues: {},
+                    recordId: undefined
+                };
+            }
+        }
+
+        function deleteDataSet() {
+
+        }
+
+        function choseDataSet(dataSet) {
+            vm.selected = dataSet;
+            processingRecord();
         }
 
         function show(state) {

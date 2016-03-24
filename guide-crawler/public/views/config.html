@@ -13,6 +13,28 @@
             </button>
         </li>
     </ol>
+
+    <div class="panel panel-green data-set-area">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-database"></i>
+                <span>Data Sets</span>
+                <label class="click-btn"
+                       ng-click="ctrl.addDataSet()">增加一個 Set</label>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="dataSet in ctrl.dataSets">
+                <div class="name-label"
+                     ng-class="ctrl.selected.name === dataSet.name ? '-selected':''"
+                     ng-click="ctrl.choseDataSet(dataSet)">
+                    {{dataSet.name}}
+                </div>
+                <div class="delete-btn" ng-click="ctrl.deleteDataSet(dataSet)">X</div>
+            </div>
+        </div>
+    </div>
+    <hr/>
     <div>
         <div class="checkbox">
             <label>
@@ -22,28 +44,6 @@
             </label>
         </div>
     </div>
-
-    <div class="panel panel-green data-set-area">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <i class="fa fa-database"></i>
-                <span>Data Sets</span>
-                <label class="click-btn"
-                       ng-click="">增加一個 Set</label>
-            </h3>
-        </div>
-        <div class="panel-body">
-            <div>
-                <div class="name-label">老師</div>
-                <div class="delete-btn">X</div>
-            </div>
-            <div>
-                <div class="name-label -selected">學生</div>
-                <div class="delete-btn">X</div>
-            </div>
-        </div>
-    </div>
-    <hr/>
 
     <!--<div>noInputs: {{ctrl.noInputs}}</div>-->
     <!--<div>isProcessing: {{ctrl.isProcessing}}</div>-->
@@ -84,10 +84,10 @@
                 <input ng-if="input.type.toLowerCase() == 'input'"
                        type="text"
                        class="form-control"
-                       ng-model="ctrl.formInputModel[input.key]"/>
+                       ng-model="ctrl.selected.formInputValues[input.key]"/>
                 <textarea ng-if="input.type.toLowerCase() == 'textarea'"
                           class="form-control"
-                          ng-model="ctrl.formInputModel[input.key]"></textarea>
+                          ng-model="ctrl.selected.formInputValues[input.key]"></textarea>
             </div>
         </div>
     </div>
