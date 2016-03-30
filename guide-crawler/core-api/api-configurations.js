@@ -1,5 +1,5 @@
 (function () {
-    var config = require('../config');
+    var $ = require('../config');
     var requestPromise = require('request-promise');
     module.exports = installConfigurationsApi;
 
@@ -11,10 +11,10 @@
 
     function getConfigurations(req, res) {
         var result = [];
-        var configurations = config.configuration.getDirSync();
+        var configurations = $.configuration.getDir();
         configurations.forEach(function (filename) {
             if (filename.match('\\.json$')) {
-                var content = config.configuration.getFileSync(filename);
+                var content = $.configuration.getFile(filename);
                 result.push(JSON.parse(content));
             }
         });
@@ -23,14 +23,14 @@
 
     function getConfiguration(req, res) {
         var filename = req.params.configId + ".json";
-        var content = config.configuration.getFileSync(filename);
+        var content = $.configuration.getFile(filename);
         res.json(JSON.parse(content));
     }
 
     function runConfiguration(req, res) {
         var configId = req.params.configId;
         var filename = configId + ".json";
-        var content = config.configuration.getFileSync(filename);
+        var content = $.configuration.getFile(filename);
         var configuration = JSON.parse(content);
         var values = req.body;
         configuration.formInputValues = [];
