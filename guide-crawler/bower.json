@@ -17,6 +17,7 @@
     "less": "~2.6.0",
     "angular-resource": "~1.4.9",
     "angular-ui-router": "^0.2.18",
-    "ngstorage": "^0.3.10"
+    "ngstorage": "^0.3.10",
+    "sweetalert": "^1.1.3"
   }
 }
